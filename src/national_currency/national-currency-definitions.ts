@@ -5,3 +5,4 @@ export interface NationalCurrencyFunctionInterface {
 export interface NationalCurrencyType {
   [currencyCode: string]: number;
 }
+

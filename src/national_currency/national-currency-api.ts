@@ -1,5 +1,5 @@
 import axios from "axios";
-import { NATIONAL_CURRENCY_API } from "../api/api-endpoints.ts";
+import { NATIONAL_CURRENCY_API } from "../api/api-endpoints-v1.ts";
 import {
   NationalCurrencyFunctionInterface,
   NationalCurrencyType,

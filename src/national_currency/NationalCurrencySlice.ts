@@ -16,7 +16,7 @@ interface initialStateType {
   loading: boolean;
   error: string | null;
 }
-const NationalCurrencySlice = createSlice({
+const      = createSlice({
   name: "nationalCurrency",
   initialState: {
     data: {},
@@ -44,5 +44,5 @@ const NationalCurrencySlice = createSlice({
       });
   },
 });
-export default NationalCurrencySlice.reducer;
 export const  getNationalCurrency  = NationalCurrencySlice.actions;
+export default NationalCurrencySlice.reducer;
