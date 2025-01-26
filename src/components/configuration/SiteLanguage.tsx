@@ -69,6 +69,7 @@ const SiteLanguage = () => {
   const SetSelectLang: React.MouseEventHandler = (value: string) => {
     setLanguageSelected(value);
     setCookie("language", value, 7);
+    setOpenLanguageModal(false)
   };
   useEffect(() => {
     const storedLanguage = getCookie("language");
@@ -87,7 +88,7 @@ const SiteLanguage = () => {
       </div>
       {openLanguageModal && (
         // languages list
-        <div className="absolute top-18 right-16 rounded-xs border-solid border-slate-800 border-[2px] px-4  w-[200px] h-[400px] bg-zinc-900 overflow-y-auto ">
+        <div className="absolute top-18 right-16 rounded-xs border-solid border-slate-800 border-[2px] px-4  w-[200px] h-[400px] bg-zinc-900  z-30 overflow-y-auto ">
           {/* language item */}
           {languages.map((lang) => (
             <button

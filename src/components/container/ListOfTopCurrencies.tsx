@@ -1,25 +1,25 @@
-import axios from "axios";
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getNationalCurrencyData } from "../../national_currency/NationalCurrencySlice.ts";
+import { AppDispatch, RootState } from "../../redux/store.ts";
 
 const ListOfTopCurrencies = () => {
-  const [currency, setCurrency] = useState();
+  const dispatch = useDispatch<AppDispatch>();
+  const currency = useSelector(
+    (state: RootState) => state.nationalCurrency.data
+  );
+  const loading = useSelector(
+    (state: RootState) => state.nationalCurrency.loading
+  );
+  const error = useSelector((state: RootState) => state.nationalCurrency.error);
 
-  const fetchData = async () => {
-    try {
-      const data = (
-        await axios.get(
-          "https://v6.exchangerate-api.com/v6/dc1f5b4d86fdde9e3151c548/latest/USD"
-        )
-      ).data;
-      setCurrency(data.conversion_rates);
-    } catch (err) {
-      console.error(err);
-    }
-  };
   useEffect(() => {
-    fetchData();
-  }, []);
+    dispatch(getNationalCurrencyData());
+  }, [dispatch]);
   if (!currency) {
+    return <div>{error}</div>;
+  }
+  if (loading) {
     return <div>Loading...</div>;
   }
   return (
