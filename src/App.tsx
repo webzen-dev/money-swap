@@ -1,10 +1,9 @@
-import React, { useEffect } from "react";
+import React from "react";
 import "./App.css";
 import Header from "./components/Header.tsx";
 import ListOfTopCurrencies from "./components/container/ListOfTopCurrencies.tsx";
 import SwapContainer from "./components/container/SwapContainer.tsx";
 import CryptoConverterPanel from "./components/container/CryptoConverterPanel.tsx";
-import CryptoCurrencyApi from "./crypto_currency/crypto-currency-api.ts";
 
 function App() { 
   return (

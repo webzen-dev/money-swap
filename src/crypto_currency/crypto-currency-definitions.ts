@@ -1,6 +1,7 @@
 export interface CryptoCurrencyFunctionInterface {
-    getCryptoCurrencyApi():Promise<CryptoCurrencyItemType>
+  getCryptoCurrencyApi(): Promise<CryptoCurrencyItemType[]>; // Return an array
 }
+
 export interface CryptoCurrencyItemType {
   id: number;
   name: string;

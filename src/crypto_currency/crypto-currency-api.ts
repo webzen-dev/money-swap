@@ -6,7 +6,7 @@ import {
 import { CRYPTO_CURRENCY_API } from "../api/api-endpoints-v1.ts";
 
 class CryptoCurrencyApi implements CryptoCurrencyFunctionInterface {
-  async getCryptoCurrencyApi(): Promise<CryptoCurrencyItemType> {
+  async getCryptoCurrencyApi(): Promise<CryptoCurrencyItemType[]> {
     try {
       const response = await axios.get(CRYPTO_CURRENCY_API, {
         headers: {
@@ -16,11 +16,12 @@ class CryptoCurrencyApi implements CryptoCurrencyFunctionInterface {
           Accept: "application/json",
         },
       });
-      if (response && response.data) {
-        console.log("Response Data:", response.data);
-        return response.data as CryptoCurrencyItemType;
+
+      if (response && response.data && Array.isArray(response.data.data)) {
+        console.log("Response Data:", response.data.data);
+        return response.data.data as CryptoCurrencyItemType[];
       } else {
-        throw new Error("Invalid data format received");
+        throw new Error("Invalid data format: Expected an array");
       }
     } catch (err: any) {
       console.error(

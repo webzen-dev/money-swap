@@ -4,15 +4,15 @@ import CryptoCurrencyApi from "./crypto-currency-api.ts";
 
 const getCryptoCurrencyData = createAsyncThunk(
   "CryptoCurrency/fetchData",
-  async (): Promise<CryptoCurrencyItemType> => {
+  async (): Promise<CryptoCurrencyItemType[]> => {
     const api = new CryptoCurrencyApi();
-    const data = api.getCryptoCurrencyApi();
+    const data = await api.getCryptoCurrencyApi();
     return data;
   }
 );
 
 interface initialStateType {
-  data: CryptoCurrencyItemType;
+  data: CryptoCurrencyItemType[];
   loading: boolean;
   error: string | null;
 }
@@ -20,7 +20,7 @@ interface initialStateType {
 const CryptoCurrencySlice = createSlice({
   name: "cryptoCurrency",
   initialState: {
-    data: {},
+    data: [],
     loading: false,
     error: null,
   } as initialStateType,
@@ -44,3 +44,5 @@ const CryptoCurrencySlice = createSlice({
     });
   },
 });
+export { getCryptoCurrencyData };
+export default CryptoCurrencySlice.reducer;

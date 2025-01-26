@@ -16,7 +16,7 @@ interface initialStateType {
   loading: boolean;
   error: string | null;
 }
-const      = createSlice({
+const NationalCurrencySlice = createSlice({
   name: "nationalCurrency",
   initialState: {
     data: {},
