@@ -1,10 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import { FaCaretDown, FaEuroSign } from "react-icons/fa";
 import { TbCurrencyDollar } from "react-icons/tb";
+import SelecetCryptoCurrency from "../../modals/SelecetCryptoCurrency.tsx";
 const BaseCurrency = () => {
+  const [openSelecetModal, setOpenSelectModal] = useState<boolean>(false);
   return (
     <div className="h-[120px] bg-indigo-900 rounded-lg flex flex-col  text-white shadow-sm shadow-black">
-      <div className="h-[50%] w-full flex justify-between p-4 items-center">
+      {openSelecetModal && <SelecetCryptoCurrency setOpenSelectModal={setOpenSelectModal} />}
+      <div className="h-[50%] w-full flex justify-between p-4 items-center " onClick={()=>setOpenSelectModal(!openSelecetModal)}>
         <div className="flex gap-2 items-center cursor-pointer ">
           <img
             src="https://s2.coinmarketcap.com/static/img/coins/64x64/1027.png"

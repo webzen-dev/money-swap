@@ -10,7 +10,6 @@ const SwapContainer = () => {
             <SwapBox/>
             <OutPut/>
             <PopularSwaps/>
-
         </div>
      );
 }

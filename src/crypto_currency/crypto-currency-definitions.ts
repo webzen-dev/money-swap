@@ -1,5 +1,5 @@
 export interface CryptoCurrencyFunctionInterface {
-  getCryptoCurrencyApi(): Promise<CryptoCurrencyItemType[]>; // Return an array
+  getCryptoCurrencyApi(start:number): Promise<CryptoCurrencyItemType[]>; 
 }
 
 export interface CryptoCurrencyItemType {
@@ -10,7 +10,7 @@ export interface CryptoCurrencyItemType {
   total_supply: number;
   date_added: string;
   quote: {
-    usd: {
+    USD: {
       price: number;
       market_cap: number;
       last_updated: string;

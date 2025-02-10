@@ -8,8 +8,9 @@ const PopularCryptocurrencies = () => {
   const { data, loading, error } = useSelector(
     (state: RootState) => state.cryptoCurrency
   );
+  
   useEffect(() => {
-    dispatch(getCryptoCurrencyData());
+    dispatch(getCryptoCurrencyData(1));
   }, [dispatch]);
   if (loading) {
     return <div>Loading...</div>;
@@ -23,6 +24,7 @@ const PopularCryptocurrencies = () => {
         Popular Cryptocurrencies
       </div>
       <div className="flex flex-wrap justify-center gap-3">
+
         {data.slice(0, 10).map((crypto: CryptoCurrencyItemType) => (
           <div
             key={crypto.id}

@@ -6,9 +6,9 @@ import {
 import { CRYPTO_CURRENCY_API } from "../api/api-endpoints-v1.ts";
 
 class CryptoCurrencyApi implements CryptoCurrencyFunctionInterface {
-  async getCryptoCurrencyApi(): Promise<CryptoCurrencyItemType[]> {
+  async getCryptoCurrencyApi(start): Promise<CryptoCurrencyItemType[]> {
     try {
-      const response = await axios.get(CRYPTO_CURRENCY_API, {
+      const response = await axios.get(`${CRYPTO_CURRENCY_API}?start=${start}&limit=25`, {
         headers: {
           // For testing, I had to put the api-key in this section. (-_-);
           "X-CMC_PRO_API_KEY":
@@ -18,7 +18,6 @@ class CryptoCurrencyApi implements CryptoCurrencyFunctionInterface {
       });
 
       if (response && response.data && Array.isArray(response.data.data)) {
-        console.log("Response Data:", response.data.data);
         return response.data.data as CryptoCurrencyItemType[];
       } else {
         throw new Error("Invalid data format: Expected an array");
