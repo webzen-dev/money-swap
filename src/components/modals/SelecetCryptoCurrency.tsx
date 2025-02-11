@@ -1,8 +1,10 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { AppDispatch, RootState } from "../../redux/store.ts";
 import { getCryptoCurrencyData } from "../../crypto_currency/cryptoCurrencySlice.ts";
 import { IoCloseOutline } from "react-icons/io5";
+import _ from "lodash";
+import { toast } from "react-toastify";
 
 interface Prop {
   setOpenSelectModal: (state: boolean) => void;
@@ -10,8 +12,10 @@ interface Prop {
 
 const SelectCryptoCurrency: React.FC<Prop> = ({ setOpenSelectModal }) => {
   const dispatch = useDispatch<AppDispatch>();
-  const [start, setStart] = useState(1);
+  const [start, setStart] = useState<number>(1);
   const ref = useRef<HTMLDivElement | null>(null);
+  const toastId = useRef<string | number | null>(null);
+
   const { data, error, loading } = useSelector(
     (state: RootState) => state.cryptoCurrency
   );
@@ -19,34 +23,49 @@ const SelectCryptoCurrency: React.FC<Prop> = ({ setOpenSelectModal }) => {
     (state: RootState) => state.nationalCurrency.data
   );
 
-  const cuterPrice = (price: number): string => {
-    return price.toFixed(3); 
-  };
-  
+  const cuterPrice = (price: number): string => price.toFixed(3);
+
   useEffect(() => {
-    dispatch(getCryptoCurrencyData(start));    
+    if (loading) {
+      if (!toastId.current) {
+        toastId.current = toast.loading("⏳ Loading .... ", { theme: "dark" });
+      }
+    } else {
+      if (toastId.current) {
+        toast.dismiss(toastId.current);
+        toastId.current = null;
+      }
+    }
+  }, [loading]);
+
+  useEffect(() => {
+    dispatch(getCryptoCurrencyData(start));
   }, [dispatch, start]);
 
-  const handleScroll = () => {
-    if (
-      window.innerHeight + (ref.current?.scrollTop ?? 0) + 1 >=
-      document.documentElement.scrollHeight
-    ) {
-      setStart((start) => start + 25);
-    }
-  };
+  const handleScroll = useCallback(
+    _.debounce(() => {
+      const element = ref.current;
+      if (!element) return;
+
+      const { scrollTop, scrollHeight, clientHeight } = element;
+      if (scrollHeight - scrollTop <= clientHeight + 50) {
+        setStart((prevPage) => prevPage + 25);
+      }
+    }, 1000),
+    []
+  );
 
   useEffect(() => {
     const currentRef = ref.current;
-    currentRef?.addEventListener("scroll", handleScroll);
-
+    if (currentRef) {
+      currentRef.addEventListener("scroll", handleScroll);
+    }
     return () => {
       currentRef?.removeEventListener("scroll", handleScroll);
     };
-  }, []);
+  }, [handleScroll]);
 
   if (error) console.error(error);
-
   return (
     <div className="w-[100%] flex flex-col gap-10 h-[100vh] py-6 px-10 bg-[rgba(0,0,0,0.5)] backdrop-blur-lg fixed z-30 left-0 right-0 top-0 bottom-0">
       {/* table label */}
@@ -93,7 +112,7 @@ const SelectCryptoCurrency: React.FC<Prop> = ({ setOpenSelectModal }) => {
             </div>
           );
         })}
-        {loading ? <div>Loading...</div> : null}
+        {/* {loadingData && <div>Loading...</div>} */}
       </div>
     </div>
   );
