@@ -1,5 +1,5 @@
 import { React } from "react";
-import SiteLanguage from "./configuration/SiteLanguage.tsx";
+// import SiteLanguage from "./configuration/SiteLanguage.tsx";
 import MainCurrency from "./configuration/MainCurrency.tsx";
 const Header = () => {
   return (
@@ -12,7 +12,7 @@ const Header = () => {
       <div className='flex gap-2 items-center justify-center'>
         {" "}
         <MainCurrency />
-        <SiteLanguage />
+        {/* <SiteLanguage /> */}
       </div>
     </header>
   );

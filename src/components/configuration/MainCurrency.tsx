@@ -1,39 +1,35 @@
-import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { FaCaretDown } from "react-icons/fa";
-interface Crypto {
-  image: string;
-  name: string;
-  symbol: string;
-}
-// demo data
+import { useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../redux/store";
+import SelectCryptoCurrency from "../modals/SelecetCryptoCurrency.tsx";
+import { useDispatch } from "react-redux";
+import { setMainCrypto } from "../../main_currency_selected/mainCurrencySlice.ts";
 const MainCurrency = () => {
-  const [crypto, setCrypto] = useState<Crypto[]>([]);
-
-  const fetchData = async () => {
-    try {
-      const data = await axios.get(
-        "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=1&page=1"
-      );
-      setCrypto(data.data);
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
+  const CryptoCurrency = useSelector(
+    (state: RootState) => state.cryptoCurrency.data
+  );
+  const dispatch = useDispatch<AppDispatch>();
+  const [openSelectModal, setOpenSelectModal] = useState<boolean>(false);
+  const crypto = useSelector((state: RootState) => state.mainCurrency);
   useEffect(() => {
-    fetchData();
-  }, []);
-  if (crypto.length === 0) return <div>Loading...</div>;
+    if (Object.keys(crypto.crypto).length === 0 && CryptoCurrency && CryptoCurrency.length > 1) {
+      dispatch(setMainCrypto(CryptoCurrency[0]));
+    }
+  }, [crypto, dispatch, CryptoCurrency]);
   return (
-    <div>
-      <div className="w-[100px] h-[40px] flex items-center  justify-center rounded-full border-[2px] border-slate-200 border-solid gap-2 cursor-pointer ">
-        <img
-          src={crypto[0].image}
-          alt={crypto[0].name}
-          className="w-[25px] h-[25px] object-cover"
+    <div
+      onClick={() => setOpenSelectModal(!openSelectModal)}
+      className="relative z-50"
+    >
+      {openSelectModal && (
+        <SelectCryptoCurrency
+          setOpenSelectModal={setOpenSelectModal}
+          currencyType={"main"}
         />
-        <div className="uppercase">{crypto[0].symbol}</div>
+      )}
+      <div className="w-[100px]  h-[40px] flex items-center  justify-center rounded-full border-[2px] border-slate-200 border-solid gap-2 cursor-pointer ">
+        <div className="uppercase">{crypto?.crypto?.symbol}</div>
         <FaCaretDown />
       </div>
     </div>

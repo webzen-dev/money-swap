@@ -1,35 +1,63 @@
-import React from 'react'
-import { FaCaretDown, FaEuroSign } from 'react-icons/fa';
-import { TbCurrencyDollar } from 'react-icons/tb';
+import React, { useEffect, useState } from "react";
+import { FaCaretDown, FaEuroSign } from "react-icons/fa";
+import { TbCurrencyDollar } from "react-icons/tb";
+import SelecetCryptoCurrency from "../../modals/SelecetCryptoCurrency.tsx";
+import { useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../../redux/store.ts";
+import { CryptoCurrencyItemType } from "../../../crypto_currency/crypto-currency-definitions.ts";
+import { useDispatch } from "react-redux";
+import { setTarget } from "../../../calculate/calculateSlice.ts";
+
 const TargetCurrency = () => {
-    return (  
-    <div className="h-[120px] bg-slate-800 rounded-lg flex flex-col  text-white ">
-      <div className="h-[50%] w-full flex justify-between p-4 items-center">
+  const dispatch = useDispatch<AppDispatch>();
+  const [openSelecetModal, setOpenSelectModal] = useState<boolean>(false);
+  const TargetCurrency: CryptoCurrencyItemType = useSelector(
+    (state: RootState) => state.calculate.targetCurrency
+  );
+  const nationalCurrency = useSelector(
+    (state: RootState) => state.nationalCurrency.data
+  );
+  const eth = useSelector((state: RootState) => state.cryptoCurrency.data);
+  useEffect(() => {
+    if (Object.keys(TargetCurrency).length === 0 && eth && eth.length > 1) {
+      dispatch(setTarget(eth[1])); 
+    }
+  }, [TargetCurrency, eth, dispatch]);
+  
+  return (
+    <div className="h-[120px] bg-slate-800 rounded-lg flex flex-col text-white ">
+      {openSelecetModal && (
+        <SelecetCryptoCurrency
+          currencyType={"target"}
+          setOpenSelectModal={setOpenSelectModal}
+        />
+      )}
+      <div
+        className="h-[50%] w-full flex justify-between p-4 items-center"
+        onClick={() => setOpenSelectModal(!openSelecetModal)}
+      >
         <div className="flex gap-2 items-center cursor-pointer ">
-          <img
-            src="https://coin-images.coingecko.com/coins/images/1/large/bitcoin.png?1696501400"
-            alt="bitcoin"
-            className="w-[25px] h-[25px] object-cover"
-          />
-          <div className="text-xl">BTC</div>
+          <div className="text-xl">{TargetCurrency?.symbol}</div>
           <div className="text-xl">
             <FaCaretDown />
           </div>
         </div>
-        <div>Bitcoin </div>
-      </div>{" "}
+        <div>{TargetCurrency?.name}</div>
+      </div>
       <div className="h-[50%] w-full flex justify-between p-4 items-center">
         <div className="text-2xl flex items-center justify-center gap-1 ">
           <TbCurrencyDollar />
-          105,139.27<span>USD</span>
+          {TargetCurrency?.quote?.USD.price}
+          <span>USD</span>
         </div>
         <div className="text-2xl flex items-center justify-center gap-1 ">
           <FaEuroSign />
-          100,355.26 <span>EUR</span>
+          {TargetCurrency?.quote?.USD.price * nationalCurrency.CAD}
+          <span>EUR</span>
         </div>
       </div>
     </div>
-    );
-}
- 
+  );
+};
+
 export default TargetCurrency;

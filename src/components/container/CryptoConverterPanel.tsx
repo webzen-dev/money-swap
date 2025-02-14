@@ -7,7 +7,6 @@ const CryptoConverterPanel = () => {
     <div className="flex-[0.3] flex-col flex gap-4">
       <InfoMainCurrency />
       <PopularCryptocurrencies/>
-
     </div>
   );
 };
