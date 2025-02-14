@@ -1,8 +1,17 @@
 import React from "react";
+import { motion } from "framer-motion";
 import { IoSwapHorizontalOutline } from "react-icons/io5";
+import useLoadAnimation from "../../hooks/useLoadAnimation.ts";
 const PopularSwaps = () => {
+  const { itemVariants, transition } = useLoadAnimation();
   return (
-    <div className=" flex w-full flex-col px-6 pb-8 py-4 gap-4 capitalize">
+    <motion.div
+      variants={itemVariants}
+      transition={transition}
+      animate="visible"
+      initial="hidden"
+      className=" flex w-full flex-col px-6 pb-8 py-4 gap-4 capitalize"
+    >
       {/* title */}
       <div className="text-orange-400 flex justify-center items-center font-bold">
         Popular crypto swap
@@ -41,7 +50,7 @@ const PopularSwaps = () => {
           BTC <IoSwapHorizontalOutline /> ETH
         </div>{" "}
       </div>
-    </div>
+    </motion.div>
   );
 };
 

@@ -5,20 +5,31 @@ import { AppDispatch, RootState } from "../../redux/store";
 import SelectCryptoCurrency from "../modals/SelecetCryptoCurrency.tsx";
 import { useDispatch } from "react-redux";
 import { setMainCrypto } from "../../main_currency_selected/mainCurrencySlice.ts";
+import useLoadAnimation from "../../hooks/useLoadAnimation.ts";
+import { motion } from "framer-motion";
 const MainCurrency = () => {
   const CryptoCurrency = useSelector(
     (state: RootState) => state.cryptoCurrency.data
   );
+  const { itemVariants, transition } = useLoadAnimation();
   const dispatch = useDispatch<AppDispatch>();
   const [openSelectModal, setOpenSelectModal] = useState<boolean>(false);
   const crypto = useSelector((state: RootState) => state.mainCurrency);
   useEffect(() => {
-    if (Object.keys(crypto.crypto).length === 0 && CryptoCurrency && CryptoCurrency.length > 1) {
+    if (
+      Object.keys(crypto.crypto).length === 0 &&
+      CryptoCurrency &&
+      CryptoCurrency.length > 1
+    ) {
       dispatch(setMainCrypto(CryptoCurrency[0]));
     }
   }, [crypto, dispatch, CryptoCurrency]);
   return (
-    <div
+    <motion.div
+      initial="hidden"
+      animate="visible"
+      variants={itemVariants}
+      transition={transition}
       onClick={() => setOpenSelectModal(!openSelectModal)}
       className="relative z-50"
     >
@@ -32,7 +43,7 @@ const MainCurrency = () => {
         <div className="uppercase">{crypto?.crypto?.symbol}</div>
         <FaCaretDown />
       </div>
-    </div>
+    </motion.div>
   );
 };
 
