@@ -1,20 +1,16 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState, AppDispatch } from "../../../redux/store";
 import { CryptoCurrencyItemType } from "../../../crypto_currency/crypto-currency-definitions.ts";
 import { setBase } from "../../../calculate/calculateSlice.ts";
-import { getCryptoCurrencyData } from "../../../crypto_currency/cryptoCurrencySlice.ts";
 import { motion } from "framer-motion";
 import useLoadAnimation from "../../../hooks/useLoadAnimation.ts";
-const PopularCryptocurrencies = () => {
+const PopularCryptocurrencies = React.memo(() => {
   const dispatch = useDispatch<AppDispatch>();
   const { data, loading, error } = useSelector(
     (state: RootState) => state.cryptoCurrency
   );
   const { itemVariants, transition } = useLoadAnimation();
-  useEffect(() => {
-    dispatch(getCryptoCurrencyData(1));
-  }, [dispatch]);
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -31,7 +27,8 @@ const PopularCryptocurrencies = () => {
       animate="visible"
       variants={itemVariants}
       transition={transition}
-      className=" w-full p-2 py-4 rounded-lg bg-gray-900 flex flex-col gap-2 items-center">
+      className=" w-full p-2 py-4 rounded-lg bg-gray-900 flex flex-col gap-2 items-center"
+    >
       <div className="text-orange-400 capitalize font-medium">
         Popular Cryptocurrencies
       </div>
@@ -48,6 +45,6 @@ const PopularCryptocurrencies = () => {
       </div>
     </motion.div>
   );
-};
+});
 
 export default PopularCryptocurrencies;

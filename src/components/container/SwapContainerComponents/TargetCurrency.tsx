@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState ,Suspense} from "react";
 import { FaCaretDown, FaEuroSign } from "react-icons/fa";
 import { TbCurrencyDollar } from "react-icons/tb";
-import SelecetCryptoCurrency from "../../modals/SelecetCryptoCurrency.tsx";
 import { useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../redux/store.ts";
 import { CryptoCurrencyItemType } from "../../../crypto_currency/crypto-currency-definitions.ts";
 import { useDispatch } from "react-redux";
 import { setTarget } from "../../../calculate/calculateSlice.ts";
-
+import LoaderOfSelecetBox from "../../loaders/LoaderOfSelecetBox.tsx";
+const SelecetCryptoCurrency =  React.lazy(()=>import("../../modals/SelecetCryptoCurrency.tsx"))
 const TargetCurrency = () => {
   const dispatch = useDispatch<AppDispatch>();
   const [openSelecetModal, setOpenSelectModal] = useState<boolean>(false);
@@ -26,12 +26,14 @@ const TargetCurrency = () => {
   
   return (
     <div className="h-[120px] bg-slate-800 rounded-lg flex flex-col text-white ">
+      <Suspense fallback={<LoaderOfSelecetBox/>}>
       {openSelecetModal && (
         <SelecetCryptoCurrency
           currencyType={"target"}
           setOpenSelectModal={setOpenSelectModal}
         />
       )}
+      </Suspense>
       <div
         className="h-[50%] w-full flex justify-between p-4 items-center"
         onClick={() => setOpenSelectModal(!openSelecetModal)}

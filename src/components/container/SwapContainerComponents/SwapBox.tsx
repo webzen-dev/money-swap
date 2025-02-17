@@ -24,8 +24,7 @@ const SwapBox = () => {
     animate="visible"
     variants={itemVariants}
     transition={transition}
-      className="relative w-full flex flex-col gap-3 px-6  "
-    >
+      className="relative w-full flex flex-col gap-3 px-6">
       <BaseCurrency />
       {/* change button  */}
       <button

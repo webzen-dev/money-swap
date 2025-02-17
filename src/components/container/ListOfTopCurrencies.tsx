@@ -42,7 +42,7 @@ const ListOfTopCurrencies = () => {
             src="/images/Flag_of_Europe.svg"
             alt="Flag of Europe"
             className="w-[50px] object-cover rounded-md"
-          />
+            />
           {/* name */}
           <span>EUR</span>
           {/* price  */}

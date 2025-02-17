@@ -1,12 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import { FaCaretDown } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../redux/store";
-import SelectCryptoCurrency from "../modals/SelecetCryptoCurrency.tsx";
 import { useDispatch } from "react-redux";
 import { setMainCrypto } from "../../main_currency_selected/mainCurrencySlice.ts";
 import useLoadAnimation from "../../hooks/useLoadAnimation.ts";
 import { motion } from "framer-motion";
+import LoaderOfSelecetBox from "../loaders/LoaderOfSelecetBox.tsx";
+const SelectCryptoCurrency = React.lazy(
+  () => import("../modals/SelecetCryptoCurrency.tsx")
+);
 const MainCurrency = () => {
   const CryptoCurrency = useSelector(
     (state: RootState) => state.cryptoCurrency.data
@@ -33,12 +36,14 @@ const MainCurrency = () => {
       onClick={() => setOpenSelectModal(!openSelectModal)}
       className="relative z-50"
     >
-      {openSelectModal && (
-        <SelectCryptoCurrency
-          setOpenSelectModal={setOpenSelectModal}
-          currencyType={"main"}
-        />
-      )}
+      <Suspense fallback={<LoaderOfSelecetBox />}>
+        {openSelectModal && (
+          <SelectCryptoCurrency
+            setOpenSelectModal={setOpenSelectModal}
+            currencyType={"main"}
+          />
+        )}
+      </Suspense>
       <div className="w-[100px]  h-[40px] flex items-center  justify-center rounded-full border-[2px] border-slate-200 border-solid gap-2 cursor-pointer ">
         <div className="uppercase">{crypto?.crypto?.symbol}</div>
         <FaCaretDown />
